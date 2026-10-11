@@ -1,0 +1,36 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<div class="jumbotron">
+  <div class="container"><h1>Reset Challenges</h1></div>
+</div>
+<div class="container">
+  {% if done is not none %}
+  <div class="alert alert-success" role="alert">
+    <strong>Reset complete.</strong> Cleared {{ done.solves }} solves, {{ done.fails }} wrong attempts,
+    {{ done.submissions }} submissions, {{ done.unlocks }} hint unlocks and {{ done.northstar_runs }} practice runs.
+    Every player is back at the first stage.
+  </div>
+  {% endif %}
+  {% if error %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endif %}
+
+  <p>Takes the whole event back to its starting state. Stages unlock one at a time, so every player will have to
+     solve stage 1 again before seeing stage 2, and so on.</p>
+  <ul>
+    <li><strong>Cleared:</strong> solves, wrong attempts, submissions, hint unlocks, practice runs (currently
+        {{ counts.solves }} / {{ counts.fails }} / {{ counts.submissions }} / {{ counts.unlocks }} / {{ counts.northstar_runs }}).</li>
+    <li><strong>Kept:</strong> all {{ users }} player accounts and teams, admin accounts, challenges, flags, hints,
+        pages, manual awards, and each player’s lifetime flag-check history and rate limits.</li>
+    <li><strong>Not touched here:</strong> the Linux scratch space, web portal sessions and the verifier service
+        (use <code>local\reset.ps1 -Linux / -Portal / -Verifier</code> for those).</li>
+  </ul>
+
+  <form method="post" onsubmit="return confirm('Reset all players to the first stage?');">
+    <input type="hidden" name="nonce" value="{{ Session.nonce }}">
+    <div class="form-group">
+      <label for="confirm">Type <code>RESET</code> to confirm</label>
+      <input class="form-control" id="confirm" name="confirm" autocomplete="off" required>
+    </div>
+    <button class="btn btn-danger" type="submit">Reset challenges for everyone</button>
+  </form>
+</div>
+{% endblock %}

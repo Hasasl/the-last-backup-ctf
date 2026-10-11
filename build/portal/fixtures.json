@@ -1,0 +1,87 @@
+{
+  "policy": [
+    {
+      "role": "employee",
+      "can_approve": false
+    },
+    {
+      "role": "sync-agent",
+      "can_approve": false
+    },
+    {
+      "role": "backup-admin",
+      "can_approve": true
+    }
+  ],
+  "transactions": [
+    {
+      "id": "TX-211",
+      "reference": "APR-0217",
+      "time": "02:11:00",
+      "account": "elias",
+      "role": "backup-admin",
+      "label": "Elias Rowan",
+      "action": "approve"
+    },
+    {
+      "id": "TX-217",
+      "reference": "APR-0217",
+      "time": "02:23:00",
+      "account": "mn-sync",
+      "role": "sync-agent",
+      "label": "Maya Nair",
+      "action": "approve"
+    },
+    {
+      "id": "TX-218",
+      "reference": "APR-0218",
+      "time": "02:26:00",
+      "account": "mn-sync",
+      "role": "sync-agent",
+      "label": "Maya Nair",
+      "action": "read"
+    }
+  ],
+  "audit": [
+    {
+      "id": "AUD-211",
+      "transaction": "TX-211",
+      "reference": "APR-0217",
+      "account": "elias",
+      "role": "backup-admin",
+      "action": "approve",
+      "result": "accepted",
+      "date": "2026-02-17"
+    },
+    {
+      "id": "AUD-217",
+      "transaction": "TX-217",
+      "reference": "APR-0217",
+      "account": "mn-sync",
+      "role": "sync-agent",
+      "action": "approve",
+      "result": "accepted",
+      "date": "2026-02-17"
+    },
+    {
+      "id": "AUD-219",
+      "transaction": "TX-217",
+      "reference": "APR-0217",
+      "account": "mn-sync",
+      "role": "sync-agent",
+      "action": "approve",
+      "result": "denied",
+      "date": "2026-02-17"
+    },
+    {
+      "id": "AUD-218",
+      "transaction": "TX-218",
+      "reference": "APR-0218",
+      "account": "mn-sync",
+      "role": "sync-agent",
+      "action": "read",
+      "result": "accepted",
+      "date": "2026-02-17"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container ns-practice">
+  <p class="ns-kicker">YOUR PERSONAL TRAINING RECORD</p>
+  <h1>Follow the trail. Again.</h1>
+  <p>Practice any stage you have already solved. Answers are recorded without adding competition points.</p>
+  {% include 'components/practice-stats.html' %}
+  <p><a class="btn btn-link" href="{{ url_for('users.private') }}">View my profile ↗</a></p>
+  <div id="practice-message" role="status" aria-live="polite"></div>
+  <div class="ns-practice-grid">
+  {% for row in practice.rows %}
+    <section class="ns-practice-card" data-challenge="{{ row.id }}">
+      <p class="ns-kicker">PRACTICE RUN {{ row.run }} · {{ 'COMPLETE' if row.complete else 'READY' }}</p>
+      <h2>{{ row.name }}</h2>
+      <p>{{ row.correct }} correct · {{ row.wrong }} wrong</p>
+      <p><a href="{{ url_for('challenges.listing') }}#{{ row.name|urlencode }}-{{ row.id }}">Open stage & evidence ↗</a></p>
+      <form class="practice-submit"><label for="flag-{{ row.id }}">Submit practice flag</label>
+        <input class="form-control" id="flag-{{ row.id }}" name="submission" type="text" maxlength="512" required autocomplete="off" {% if row.complete %}disabled{% endif %}>
+        <button class="btn btn-primary mt-3" {% if row.complete %}disabled{% endif %}>Check flag</button>
+      </form>
+    </section>
+  {% else %}<section class="ns-practice-card"><h2>Your first replay starts with a solve.</h2><p>Complete a stage on the evidence board to unlock it here.</p><a class="btn btn-primary" href="{{ url_for('challenges.listing') }}">Open challenges</a></section>{% endfor %}
+  </div>
+  <p class="mt-4">Flag checks: up to 5 per minute and 30 per hour per account across competition and practice. Shared-address limits also apply. Signing in again does not clear these limits.</p>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+(() => {
+ const message = document.getElementById('practice-message');
+ const notice = sessionStorage.getItem('northstar-practice-notice');
+ if (notice) { message.textContent = notice; sessionStorage.removeItem('northstar-practice-notice'); }
+ let busy = false;
+
+ async function act(action, challenge_id, submission) {
+   if (busy) return;
+   busy = true;
+   message.textContent = 'Working…';
+   try {
+     const response = await fetch({{ url_for('northstar_replay.action')|tojson }}, {
+       method: 'POST', headers: {'Content-Type': 'application/json', 'CSRF-Token': {{ Session.nonce|tojson }}},
+       body: JSON.stringify({action, challenge_id, submission})
+     });
+     const result = await response.json().catch(() => ({}));
+     const text = result.data?.message || `Action could not complete (${response.status}). Reload and try again.`;
+     message.textContent = text;
+     if (response.ok) { sessionStorage.setItem('northstar-practice-notice', text); location.reload(); }
+   } catch (_) { message.textContent = 'Connection lost. Reload to check your saved progress before retrying.'; }
+   finally { busy = false; }
+ }
+ document.querySelectorAll('[data-challenge]').forEach(card => {
+   const id = Number(card.dataset.challenge);
+   card.querySelector('form').addEventListener('submit', e => { e.preventDefault(); act('submit', id, new FormData(e.target).get('submission')); });
+ });
+})();
+</script>
+{% endblock %}

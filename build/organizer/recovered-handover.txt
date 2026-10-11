@@ -1,0 +1,8 @@
+PRIVATE HANDOVER — Case MN06-0217
+FLAG{st05_the_deleted_minutes_survive_4ea280c9}
+The maintenance export is missing part of the night. Join SESSION.LOG and
+AUDIT.JSL by case and session; identify the service and its UTC start/end.
+Find the audit event preserving the pre-change manifest. Join its record to
+RELEASE.CSV for the trusted manifest SHA-256. Keep this hash for Stage 6.
+Ask the organizer for an analyst SSH account and verifier token after scoring.
+Elias

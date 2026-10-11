@@ -1,0 +1,54 @@
+services:
+  ctfd:
+    image: ctfd/ctfd:3.7.7
+    environment:
+      SECRET_KEY: ${CTFD_SECRET:?Run scripts/init_deploy.py}
+      DATABASE_URL: mysql+pymysql://ctfd:${DB_PASSWORD}@database/ctfd
+      REDIS_URL: redis://cache:6379
+      UPLOAD_FOLDER: /var/uploads
+      LOG_FOLDER: /var/log/CTFd
+      REVERSE_PROXY: "1"
+      WORKERS: "2"
+    volumes:
+      - ctfd-uploads:/var/uploads
+      - ctfd-logs:/var/log/CTFd
+    depends_on:
+      database: {condition: service_healthy}
+      cache: {condition: service_started}
+    networks: [web, data]
+    restart: unless-stopped
+  database:
+    image: mariadb:10.11
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Run scripts/init_deploy.py}
+      MARIADB_DATABASE: ctfd
+      MARIADB_USER: ctfd
+      MARIADB_PASSWORD: ${DB_PASSWORD:?Run scripts/init_deploy.py}
+    volumes: ["ctfd-db:/var/lib/mysql"]
+    networks: [data]
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      retries: 12
+    restart: unless-stopped
+  cache:
+    image: redis:7.4-alpine
+    networks: [data]
+    restart: unless-stopped
+  control-web:
+    image: nginx:1.28.0-alpine
+    ports: ["192.168.77.10:443:443"]
+    volumes:
+      - ./deploy/nginx/control.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./runtime/certs/control.crt:/certs/control.crt:ro
+      - ./runtime/certs/control.key:/certs/control.key:ro
+    depends_on: [ctfd]
+    networks: [web]
+    restart: unless-stopped
+volumes:
+  ctfd-db:
+  ctfd-uploads:
+  ctfd-logs:
+networks:
+  web: {internal: true}
+  data: {internal: true}

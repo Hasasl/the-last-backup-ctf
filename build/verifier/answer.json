@@ -1,0 +1,9 @@
+{
+  "flag": "FLAG{st06_verify_the_exit_before_you_trust_93fd61b2}",
+  "answer": {
+    "release_id": "R17",
+    "route_id": "EXIT-04",
+    "service": "mn-sync",
+    "event_id": "EVT-024"
+  }
+}

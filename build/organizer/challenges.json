@@ -1,0 +1,110 @@
+[
+  {
+    "stage": "1",
+    "name": "01 \u00b7 The Missing Employee",
+    "category": "OSINT",
+    "value": 100,
+    "description": "Compare the staff directory, preserved event register and archived notices. Match both case and timestamp. Open the Stage 1 archive at {archive_url}.",
+    "flag": "FLAG{st01_follow_the_missing_identity_7c2e91a4}",
+    "hints": [
+      {
+        "content": "Check announcements older than the directory.",
+        "cost": 5
+      },
+      {
+        "content": "Match both case reference and UTC meeting time.",
+        "cost": 10
+      }
+    ]
+  },
+  {
+    "stage": "2",
+    "name": "02 \u00b7 More Than a Photograph",
+    "category": "Steganography",
+    "value": 100,
+    "description": "Recover Maya\u2019s note from the original PNG obtained in Stage 1. Read red-channel least-significant bits, row-major, MSB-first bytes, UTF-8 to NUL. Preserve the original.",
+    "flag": "FLAG{st02_the_glitch_carries_a_message_b6f034d8}",
+    "hints": [
+      {
+        "content": "Use the original image pixels.",
+        "cost": 5
+      },
+      {
+        "content": "Read only red-channel least-significant bits.",
+        "cost": 10
+      }
+    ]
+  },
+  {
+    "stage": "3",
+    "name": "03 \u00b7 Someone Used Her Name",
+    "category": "Web Security",
+    "value": 200,
+    "description": "Use APR-0217 to compare policy, transaction and audit records at {portal_url}. Submit the corroborating pair to release the encrypted warning.",
+    "flag": "FLAG{st03_an_agent_signed_the_approval_28a9cf71}",
+    "hints": [
+      {
+        "content": "Authentication and approval permission are different.",
+        "cost": 10
+      },
+      {
+        "content": "Match the accepted audit event to the policy and transaction.",
+        "cost": 20
+      }
+    ]
+  },
+  {
+    "stage": "4",
+    "name": "04 \u00b7 The Administrator\u2019s Warning",
+    "category": "Cryptography",
+    "value": 200,
+    "description": "Decrypt Elias\u2019s message using the supplied training memo. Submit the recovered flag, then request northstar_evidence.img from your organizer. Check its SHA-256 before analysis.",
+    "flag": "FLAG{st04_the_oracle_warned_you_d17b630e}",
+    "hints": [
+      {
+        "content": "The key repeats: ORACLE.",
+        "cost": 10
+      },
+      {
+        "content": "A=0; only ASCII letters advance the key, including across lines.",
+        "cost": 20
+      }
+    ]
+  },
+  {
+    "stage": "5",
+    "name": "05 \u00b7 Seventeen Missing Minutes",
+    "category": "Digital Forensics",
+    "value": 250,
+    "description": "Recover the deleted handover from the 64 MiB FAT16 raw image (filesystem offset zero). Correlate SESSION.LOG, AUDIT.JSL and RELEASE.CSV. Retain the service, UTC window and trusted manifest hash. Ask the organizer for Stage 6 access after scoring.",
+    "flag": "FLAG{st05_the_deleted_minutes_survive_4ea280c9}",
+    "hints": [
+      {
+        "content": "Analyse a copy and enumerate deleted entries.",
+        "cost": 15
+      },
+      {
+        "content": "Recover the handover, then join case, session and release record IDs.",
+        "cost": 30
+      }
+    ]
+  },
+  {
+    "stage": "6",
+    "name": "06 \u00b7 The Wrong Recovery Route",
+    "category": "Linux Security",
+    "value": 300,
+    "description": "Use your issued analyst SSH account to investigate /srv/northstar. Authenticate the manifest and then its route. Submit release, route, service and redirection event at {verifier_url}, then submit the returned flag here.",
+    "flag": "FLAG{st06_verify_the_exit_before_you_trust_93fd61b2}",
+    "hints": [
+      {
+        "content": "Inspect the pointer and its history.",
+        "cost": 20
+      },
+      {
+        "content": "Authenticate the manifest first, then check its route hash.",
+        "cost": 40
+      }
+    ]
+  }
+]

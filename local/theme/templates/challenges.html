@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ url_for('views.themes', path='css/challenge-board.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container"><div class="ns-board-intro"><div><p class="ns-kicker">YOUR INVESTIGATION</p><h1>The evidence board.</h1><p>Open a challenge, follow its trail, and submit what you discover.</p></div><span class="ns-pill"><i></i> SIX STAGES / 1,150 POINTS</span></div></div>
+<div class="modal fade" id="challenge-window" tabindex="-1" role="dialog">
+</div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			{% include "components/errors.html" %}
+		</div>
+	</div>
+
+	<div id='challenges-board'>
+		<div class="min-vh-50 d-flex align-items-center">
+			<div class="text-center w-100">
+				<i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container"><aside class="ns-board-help"><div><strong>Only seeing the first stage?</strong><p>Complete it to reveal the next. Already solved a stage? <a href="/practice">Practice it here</a>.</p></div><a href="/#case-stages">Read the case briefing ↗</a></aside></div>{% endblock %}
+
+{% block scripts %}
+{% endblock %}
+
+{% block entrypoint %}
+	<script defer src="{{ url_for('views.themes', path='js/pages/challenges.js') }}"></script>
+{% endblock %}

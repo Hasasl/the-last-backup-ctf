@@ -1,0 +1,33 @@
+
+# Environment secrets
+.env
+.env.*
+!.env.example
+/local/.env
+/LOCAL-ACCESS.txt
+
+# Backups and local runtime state
+/backups/
+/runtime/
+
+# Private credentials and tokens
+/local/private/analyst_key
+/local/private/organizer-login.txt
+/local/private/*verifier-token*.txt
+/local/private/backup-validation/
+/local/private/known_hosts
+/local/private/replay-browser.json
+
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+
+# Python cache and virtual environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+/local/private/analyst_key.pub
+/test-results/

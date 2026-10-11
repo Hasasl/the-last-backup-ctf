@@ -1,0 +1,132 @@
+{
+  "release": "last-backup-1.0",
+  "date": "2026-02-17",
+  "case": "MN06-0217",
+  "trusted_manifest_sha256": "ea9dfdcae523a704a7effe4ded63f00d5f8800f99027b57a880c39689155be7a",
+  "files": {
+    "handouts/northstar_evidence.img": {
+      "bytes": 67108864,
+      "sha256": "7714e7af5b98328c217cef6a44827d1a4267ef1a9307b36c14babd1a0e995bb3"
+    },
+    "linux/logs/maintenance.log": {
+      "bytes": 353,
+      "sha256": "ca5fef4820a54545bef1635875b7dfccc61259ed48315df0211b009c532212e0"
+    },
+    "linux/logs/release.log": {
+      "bytes": 216,
+      "sha256": "1f6bf2025c63c6b507ccbfd015cbc320380b09259aaab18edbc0b6861a57a048"
+    },
+    "linux/manifests/R16.sha256": {
+      "bytes": 123,
+      "sha256": "9baca4432819cd0270b90f428a5f448ffe27d7fb6f277ef43ea47f5a16e819e0"
+    },
+    "linux/manifests/R17.sha256": {
+      "bytes": 123,
+      "sha256": "ea9dfdcae523a704a7effe4ded63f00d5f8800f99027b57a880c39689155be7a"
+    },
+    "linux/manifests/R18.sha256": {
+      "bytes": 123,
+      "sha256": "4d87e3849aad9e69a6fb684588dbeaf0e26cadf1a4bf9ab84ee56f8e23bde41d"
+    },
+    "linux/README.txt": {
+      "bytes": 598,
+      "sha256": "dc8f3197bfd7b399244d30e7468908773f4445a67484e66ad878d1ccdc7e04ec"
+    },
+    "linux/routes/EXIT-02.route": {
+      "bytes": 83,
+      "sha256": "26580ffa9113d352d666fc60095fa4c2301f18016eab3004d53803e173ec2a62"
+    },
+    "linux/routes/EXIT-04.route": {
+      "bytes": 92,
+      "sha256": "14fbcff74690a302036429886a41cbdde8950b96b6c65ec5a6688093b62420bd"
+    },
+    "linux/routes/EXIT-09.route": {
+      "bytes": 110,
+      "sha256": "2063455ca0ba138eaca7d9328136ef6d71eefec532c5e1d91cb500039a4f64cd"
+    },
+    "organizer/challenges-split5.json": {
+      "bytes": 4417,
+      "sha256": "9f3996cd318bc4ae6f7a81b083f050f7cd2b69aa224e2ac7352953e335140818"
+    },
+    "organizer/challenges.json": {
+      "bytes": 3798,
+      "sha256": "6be15006bbc2fa460d406b499f961dd5f00fdf2a63ca40382daaa166c5219ca5"
+    },
+    "organizer/fat-entries.json": {
+      "bytes": 904,
+      "sha256": "74000d8cd818a7e69f0a735aa38400a4af01a987f27b952983775169c1c2f5dd"
+    },
+    "organizer/linux-evidence.tar": {
+      "bytes": 20480,
+      "sha256": "6e6428571b676f8c2c0a481a142cecdd2b658bb45c4b13c8e7fb37f64914c284"
+    },
+    "organizer/recovered-handover.txt": {
+      "bytes": 468,
+      "sha256": "249f48577b453cb130d9e8f80df98c8dca47f26c1c33f043ad5addd4e023a6ce"
+    },
+    "organizer/stage4-plaintext.txt": {
+      "bytes": 324,
+      "sha256": "812b843af9d44048e8ccc27f4bd1ccc73e9c6b2c5bd1c628f0e742b83ae2f162"
+    },
+    "portal/elias.enc.txt": {
+      "bytes": 324,
+      "sha256": "ed67d5dff57f75ae350222814f7c62ce13ece2eac4d1d9684467cf52357681b9"
+    },
+    "portal/fixtures.json": {
+      "bytes": 1809,
+      "sha256": "c0f3fa0b86f5f8eea47c0c32592d0f7733f57dd64b799d041dbff509089ed424"
+    },
+    "portal/private.json": {
+      "bytes": 119,
+      "sha256": "88e79720eeb50ced69b7bb46be0ee4ddcc2f1097fce4406ed7eefae7a681d1db"
+    },
+    "portal/training-memo.txt": {
+      "bytes": 573,
+      "sha256": "602dd6e1fe03b158a3875bd5fcbde5e5d8634cae108f940aaa18dfb095479284"
+    },
+    "stage1/archive.html": {
+      "bytes": 760,
+      "sha256": "db4ac0b681dfc3d7ef7445d088a02e65dc1f7d899aeac2546046d4b45c263b06"
+    },
+    "stage1/event-original.png": {
+      "bytes": 8160,
+      "sha256": "f36d5bcad08d419e10d18f40228471296858b92bcef9dc18fe58e7dcb57c784c"
+    },
+    "stage1/events.html": {
+      "bytes": 806,
+      "sha256": "bacc11a692a713d5e7cb5e0d14760aa6a9a2f8088343edf0e91005df93b16fee"
+    },
+    "stage1/index.html": {
+      "bytes": 1152,
+      "sha256": "6972e2aeec69d96353e66c4d9965740451b2a733c1c309b5504eb48b040a0cf2"
+    },
+    "stage1/notice-061.html": {
+      "bytes": 765,
+      "sha256": "5a4e5c0934ed3f0d79129f9fd6c1a4c0cc968625d0e30394e0e8df6dcf201f5e"
+    },
+    "stage1/notice-062.html": {
+      "bytes": 908,
+      "sha256": "3ddd9ae7def01a9e5c4c57cf449c449e1aabe011caee5bafd22c66e776460a80"
+    },
+    "stage1/notice-063.html": {
+      "bytes": 765,
+      "sha256": "3589488a5dca5147c2fed37cdb2cb40118bbfff7853b8d8c9804bcd4518eb889"
+    },
+    "stage1/pixel-note.txt": {
+      "bytes": 190,
+      "sha256": "4584fa45ba9fd004c38175fd437de814351d8928648363b936dc96144b18c516"
+    },
+    "stage1/staff.html": {
+      "bytes": 806,
+      "sha256": "b9c6d49e552c90c6ac8e0179b1d2fead40cb93e2e12cd47c87bb9f83c17255ca"
+    },
+    "stage1/style.css": {
+      "bytes": 2863,
+      "sha256": "b026c290a52bbea2e3f71bdde89ee8dafd8f715b0c8e5515d718fc109f78c3bd"
+    },
+    "verifier/answer.json": {
+      "bytes": 192,
+      "sha256": "337d77f72883c6adf07549bd648c65b00e754387e251054782a483751cbf05d4"
+    }
+  }
+}

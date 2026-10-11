@@ -1,0 +1,80 @@
+name: last-backup-v4-test
+services:
+  ctfd:
+    image: ctfd/ctfd:3.7.7
+    environment:
+      SECRET_KEY: isolated-replay-tests-only-not-an-event-secret
+      DATABASE_URL: mysql+pymysql://ctfd:${DB_PASSWORD}@database/ctfd
+      REDIS_URL: redis://cache:6379
+      UPLOAD_FOLDER: /var/uploads
+      LOG_FOLDER: /var/log/CTFd
+      REVERSE_PROXY: '0'
+      WORKERS: '2'
+      ADMIN_NAME: ${ADMIN_NAME}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+    volumes:
+    - ctfd-uploads:/var/uploads
+    - ctfd-logs:/var/log/CTFd
+    - ./local/private:/bootstrap:ro
+    - ./build/organizer:/organizer:ro
+    - ./local/theme:/opt/CTFd/CTFd/themes/northstar:ro
+    - ./local/plugins/northstar_replay:/opt/CTFd/CTFd/plugins/northstar_replay:ro
+    - ./local:/replay-tests:ro
+    depends_on:
+      database:
+        condition: service_healthy
+      cache:
+        condition: service_started
+    networks:
+    - local-web
+    - data
+    restart: unless-stopped
+    ports:
+    - 127.0.0.1:8004:8000
+  database:
+    image: mariadb:10.11
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Run scripts/init_deploy.py}
+      MARIADB_DATABASE: ctfd
+      MARIADB_USER: ctfd
+      MARIADB_PASSWORD: ${DB_PASSWORD:?Run scripts/init_deploy.py}
+    volumes:
+    - ctfd-db:/var/lib/mysql
+    networks:
+    - data
+    healthcheck:
+      test:
+      - CMD
+      - healthcheck.sh
+      - --connect
+      - --innodb_initialized
+      interval: 10s
+      retries: 12
+    restart: unless-stopped
+  cache:
+    image: redis:7.4-alpine
+    networks:
+    - data
+    restart: unless-stopped
+volumes:
+  ctfd-db:
+    name: last-backup-v4-test_ctfd-db
+  ctfd-uploads:
+    name: last-backup-v4-test_ctfd-uploads
+  ctfd-logs:
+    name: last-backup-v4-test_ctfd-logs
+networks:
+  data:
+    name: last-backup-v4-test_data
+    internal: true
+  local-web:
+    name: last-backup-v4-test_local-web
+  local-archive:
+    name: last-backup-v4-test_local-archive
+  local-portal:
+    name: last-backup-v4-test_local-portal
+  local-evidence:
+    name: last-backup-v4-test_local-evidence
+  local-verifier:
+    name: last-backup-v4-test_local-verifier

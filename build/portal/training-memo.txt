@@ -1,0 +1,10 @@
+NORTHSTAR LEGACY RECOVERY TRAINING
+Project keyword: ORACLE
+Our classroom repeating-key cipher uses A=0 through Z=25.
+Encrypt: C=(P+K) mod 26. Decrypt: P=(C-K) mod 26.
+Advance the key only on ASCII letters A-Z or a-z. Preserve case, punctuation,
+digits, braces, underscores, spaces and newlines. Continue the key across
+lines; restart at the beginning of a file. Read and write UTF-8.
+Check example: ABC abc! encrypts to OSC cmg!
+This is an educational historical cipher, not modern data protection.
+After solving and scoring Stage 4, ask the organizer for the named image.

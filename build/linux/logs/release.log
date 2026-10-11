@@ -1,0 +1,3 @@
+2026-02-17T01:50:00Z release=R16 route=EXIT-02 action=retire
+2026-02-17T02:11:00Z release=R17 route=EXIT-04 action=register event=REL-017
+2026-02-17T02:25:00Z release=R18 route=EXIT-09 action=advertise event=REL-018

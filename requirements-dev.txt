@@ -1,0 +1,5 @@
+-r requirements.txt
+pytest==8.4.2
+pyfatfs==1.1.0
+PyYAML==6.0.2
+setuptools==80.9.0

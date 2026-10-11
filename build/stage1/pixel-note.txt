@@ -1,0 +1,1 @@
+Use the original lossless PNG. Read one least-significant bit from each red channel, left to right, top to bottom. Assemble bytes most-significant bit first, decode UTF-8, stop at NUL (00).

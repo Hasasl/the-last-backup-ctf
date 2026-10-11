@@ -1,0 +1,22 @@
+services:
+  linux:
+    build: ./deploy/linux
+    hostname: northstar-evidence
+    ports: ["192.168.77.30:22:22"]
+    volumes:
+      - ./build/organizer/linux-evidence.tar:/evidence.tar:ro
+      - ./runtime/analyst_authorized_keys:/etc/ssh/authorized_keys/analyst:ro
+      - ssh-hostkeys:/hostkeys
+    tmpfs:
+      - /srv/northstar
+      - /home/analyst/work:uid=2000,gid=2000,mode=0700
+      - /run
+      - /tmp
+    read_only: true
+    security_opt: ["no-new-privileges:true"]
+    networks: [evidence]
+    restart: unless-stopped
+volumes:
+  ssh-hostkeys:
+networks:
+  evidence: {internal: true}

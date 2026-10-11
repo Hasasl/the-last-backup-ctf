@@ -1,0 +1,6 @@
+Maya was right. The approval label cannot establish authority.
+FLAG{st04_the_oracle_warned_you_d17b630e}
+Preserve northstar_evidence.img before analysing a working copy.
+SHA-256: 7714e7af5b98328c217cef6a44827d1a4267ef1a9307b36c14babd1a0e995bb3
+Recover the deleted handover; corroborate its claims with preserved logs.
+Elias

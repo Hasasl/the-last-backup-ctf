@@ -1,0 +1,50 @@
+[
+  {
+    "name": "README.TXT",
+    "deleted": false,
+    "cluster": 2,
+    "size": 124,
+    "directory_offset": 131584,
+    "data_offset": 147968
+  },
+  {
+    "name": "SESSION.LOG",
+    "deleted": false,
+    "cluster": 3,
+    "size": 348,
+    "directory_offset": 131616,
+    "data_offset": 150016
+  },
+  {
+    "name": "AUDIT.JSL",
+    "deleted": false,
+    "cluster": 4,
+    "size": 434,
+    "directory_offset": 131648,
+    "data_offset": 152064
+  },
+  {
+    "name": "RELEASE.CSV",
+    "deleted": false,
+    "cluster": 5,
+    "size": 286,
+    "directory_offset": 131680,
+    "data_offset": 154112
+  },
+  {
+    "name": "EXPORT.LOG",
+    "deleted": false,
+    "cluster": 6,
+    "size": 82,
+    "directory_offset": 131712,
+    "data_offset": 156160
+  },
+  {
+    "name": "HANDOVER.TXT",
+    "deleted": true,
+    "cluster": 7,
+    "size": 468,
+    "directory_offset": 131744,
+    "data_offset": 158208
+  }
+]
