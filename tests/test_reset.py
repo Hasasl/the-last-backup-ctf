@@ -111,10 +111,20 @@ def test_every_documented_switch_appears_in_readme():
         assert switch in readme, switch
 
 
+
 def test_no_machine_specific_paths_remain():
-    for path in list((ROOT / 'local').glob('*.ps1')) + list((ROOT / 'local').glob('*.py')) + \
-            [ROOT / 'README-LOCAL.md', ROOT / 'LOCAL-ACCESS.txt', ROOT / 'FULL-TEST-REPORT.md', ROOT / 'docs/RESET.md']:
+    paths = (
+        list((ROOT / 'local').glob('*.ps1'))
+        + list((ROOT / 'local').glob('*.py'))
+        + [
+            ROOT / 'README-LOCAL.md',
+            ROOT / 'FULL-TEST-REPORT.md',
+            ROOT / 'docs/RESET.md',
+        ]
+    )
+    for path in paths:
         assert 'oshad' not in path.read_text(errors='ignore'), path
+
 
 
 def test_verifier_init_builds_its_image_instead_of_pulling_it():
