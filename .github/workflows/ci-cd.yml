@@ -1,0 +1,135 @@
+
+name: CTF CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      confirm_deploy:
+        description: "Deploy the tested main commit to ctf.botcom.space"
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test CTF project
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-dev.txt
+
+      - name: Run tests
+        run: python -m pytest -q
+
+  deploy:
+    name: Deploy to ctf.botcom.space
+    needs: test
+    if: ${{ github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.confirm_deploy == true }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    concurrency:
+      group: ctf-production-deployment
+      cancel-in-progress: false
+
+    steps:
+      - name: Verify SSH host and trigger deployment
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_HOST_KEY_FINGERPRINT: ${{ secrets.DEPLOY_HOST_KEY_FINGERPRINT }}
+
+        run: |
+          set -euo pipefail
+          umask 077
+
+          for name in \
+            DEPLOY_HOST DEPLOY_PORT DEPLOY_USER \
+            DEPLOY_SSH_KEY DEPLOY_HOST_KEY_FINGERPRINT
+          do
+            if [[ -z "${!name:-}" ]]; then
+              echo "::error::Missing GitHub secret: $name"
+              exit 1
+            fi
+          done
+
+          mkdir -p "$RUNNER_TEMP/ctf-deploy-ssh"
+          chmod 700 "$RUNNER_TEMP/ctf-deploy-ssh"
+
+          KEY_FILE="$RUNNER_TEMP/ctf-deploy-ssh/id_ed25519"
+          KNOWN_HOSTS="$RUNNER_TEMP/ctf-deploy-ssh/known_hosts"
+
+          printf '%s\n' "$DEPLOY_SSH_KEY" > "$KEY_FILE"
+          chmod 600 "$KEY_FILE"
+          unset DEPLOY_SSH_KEY
+
+          ssh-keyscan -T 10 -p "$DEPLOY_PORT" -t ed25519 \
+            "$DEPLOY_HOST" 2>/dev/null > "$KNOWN_HOSTS"
+
+          if [[ ! -s "$KNOWN_HOSTS" ]]; then
+            echo "::error::Could not retrieve the VPS SSH host key."
+            exit 1
+          fi
+
+          ACTUAL_FINGERPRINT="$(
+            ssh-keygen -lf "$KNOWN_HOSTS" -E sha256 |
+            awk 'NR == 1 {print $2}'
+          )"
+
+          if [[ "$ACTUAL_FINGERPRINT" != "$DEPLOY_HOST_KEY_FINGERPRINT" ]]; then
+            echo "::error::VPS SSH host-key fingerprint mismatch."
+            exit 1
+          fi
+
+          echo "VPS SSH host identity verified."
+
+          # The VPS key is restricted to the deployment script.
+          ssh -T \
+            -i "$KEY_FILE" \
+            -p "$DEPLOY_PORT" \
+            -o IdentitiesOnly=yes \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$KNOWN_HOSTS" \
+            -o ConnectTimeout=10 \
+            "$DEPLOY_USER@$DEPLOY_HOST"
+
+          # Verify the public site after the remote deployment succeeds.
+          curl --fail --silent --show-error --location \
+            --max-time 30 \
+            --retry 5 \
+            --retry-delay 3 \
+            --retry-connrefused \
+            --output /dev/null \
+            https://ctf.botcom.space/
+
+          echo "Deployment and public HTTPS health check succeeded."
