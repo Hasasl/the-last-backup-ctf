@@ -51,7 +51,7 @@ jobs:
   deploy:
     name: Deploy to ctf.botcom.space
     needs: test
-    if: ${{ github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.confirm_deploy == true }}
+    if: ${{ needs.test.result == 'success' && github.ref == 'refs/heads/main' && (github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.confirm_deploy == true)) }}
     runs-on: ubuntu-latest
     timeout-minutes: 35
 
@@ -67,6 +67,7 @@ jobs:
           DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
           DEPLOY_HOST_KEY_FINGERPRINT: ${{ secrets.DEPLOY_HOST_KEY_FINGERPRINT }}
+          DEPLOY_SHA: ${{ github.sha }}
 
         run: |
           set -euo pipefail
@@ -74,7 +75,7 @@ jobs:
 
           for name in \
             DEPLOY_HOST DEPLOY_PORT DEPLOY_USER \
-            DEPLOY_SSH_KEY DEPLOY_HOST_KEY_FINGERPRINT
+            DEPLOY_SSH_KEY DEPLOY_HOST_KEY_FINGERPRINT DEPLOY_SHA
           do
             if [[ -z "${!name:-}" ]]; then
               echo "::error::Missing GitHub secret: $name"
@@ -121,7 +122,7 @@ jobs:
             -o StrictHostKeyChecking=yes \
             -o UserKnownHostsFile="$KNOWN_HOSTS" \
             -o ConnectTimeout=10 \
-            "$DEPLOY_USER@$DEPLOY_HOST"
+            "$DEPLOY_USER@$DEPLOY_HOST" "deploy $DEPLOY_SHA"
 
           # Verify the public site after the remote deployment succeeds.
           curl --fail --silent --show-error --location \
